@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-02-2017 a las 23:35:17
--- Versión del servidor: 5.6.17
--- Versión de PHP: 5.5.12
+-- Tiempo de generación: 01-03-2017 a las 01:14:16
+-- Versión del servidor: 10.1.19-MariaDB
+-- Versión de PHP: 5.6.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,13 +14,53 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `testdb`
 --
-CREATE DATABASE IF NOT EXISTS `testdb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `testdb`;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `idproducto` int(11) NOT NULL,
+  `codigo` varchar(50) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `color` varchar(50) NOT NULL,
+  `unidad_medida` varchar(50) NOT NULL,
+  `calibre` varchar(50) NOT NULL,
+  `voltaje` varchar(50) NOT NULL,
+  `tipo_tarjeta` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`idproducto`, `codigo`, `descripcion`, `color`, `unidad_medida`, `calibre`, `voltaje`, `tipo_tarjeta`) VALUES
+(1, 'uno', 'grande', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `status`
+--
+
+CREATE TABLE `status` (
+  `id_status` int(50) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `status`
+--
+
+INSERT INTO `status` (`id_status`, `descripcion`) VALUES
+(2, 'activos');
 
 -- --------------------------------------------------------
 
@@ -28,26 +68,59 @@ USE `testdb`;
 -- Estructura de tabla para la tabla `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `idusuario` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `usuarios` (
+  `idusuario` int(11) NOT NULL,
   `usuario` varchar(50) NOT NULL,
   `password` varchar(32) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `appaterno` varchar(100) DEFAULT NULL,
   `apmaterno` varchar(100) DEFAULT NULL,
   `privilegios` int(11) NOT NULL,
-  PRIMARY KEY (`idusuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `fecha_alta` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`idusuario`, `usuario`, `password`, `nombre`, `appaterno`, `apmaterno`, `privilegios`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrador', '', '', 1),
-(2, 'edgar', '202cb962ac59075b964b07152d234b70', 'Edgar', 'Bautista', 'Cuadrilla', 2);
+INSERT INTO `usuarios` (`idusuario`, `usuario`, `password`, `nombre`, `appaterno`, `apmaterno`, `privilegios`, `fecha_alta`) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrador', '', '', 1, '0000-00-00'),
+(2, 'edgar', '202cb962ac59075b964b07152d234b70', 'Edgar', 'Bautista', 'Cuadrilla', 2, '0000-00-00'),
+(3, 'Diana', 'fd6438b18f84875b61d905b64d1742ab', 'Diana', 'Corona', 'Garcia', 1, '0000-00-00'),
+(4, 'fecha', '94ed416723ce619a79d9bf5ecb292718', 'fecha', 'fecha', 'fecha', 2, '2017-01-02'),
+(5, 'fecha2', 'a704190d2981ad3caf8c64b118b474a9', 'fecha2', 'fecha2', 'fecha2', 2, '2017-01-02'),
+(6, 'fecha3', '5a8eeae56b3335f2944e88792e417f91', 'fecha3', 'fecha3', 'fecha3', 2, '2017-01-02');
 
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `status`
+--
+ALTER TABLE `status`
+  ADD PRIMARY KEY (`id_status`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`idusuario`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `status`
+--
+ALTER TABLE `status`
+  MODIFY `id_status` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
