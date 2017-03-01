@@ -26,8 +26,13 @@
                         <li class="condensed-300"><a href="status.php">Status</a></li>
                     </ul>
                 </li>
+                <li class="condensed-300">
+                    <a href="#">Almacen</a>
+                    <ul class="submenu">
+                        <li class="condensed-300"><a href="productos.php">Productos</a></li>
+                    </ul>
+                </li>
             <?php } ?>
-            <li class="condensed-300"><a href="#">item 3</a></li>
             <li class="condensed-300"><a href="#">item 4</a></li>
             <li class="condensed-300"><a href="#">item 5</a></li>
         </ul>
