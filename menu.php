@@ -58,9 +58,7 @@
                     <a href="#">Catálogos</a>
                     <ul class="submenu">
                         <li class="condensed-300"><a href="usuarios.php">Usuarios</a></li>
-                        <li class="condensed-300"><a href="cosas.php">Cosas</a></li>
-                        <li class="condensed-300"><a href="#">item 2.2</a></li>
-                        <li class="condensed-300"><a href="#">item 2.3</a></li>
+                        <li class="condensed-300"><a href="status.php">Status</a></li>
                     </ul>
                 </li>
             <?php } ?>
