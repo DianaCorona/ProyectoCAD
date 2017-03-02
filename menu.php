@@ -3,7 +3,7 @@
     {
         header("Location: index.php");
         exit;
-    }    
+    }
 ?>
 <!-- Menú para vistas de escritorio y pantallas grandes -->
 <div id="top-menu" style="position:fixed;top:0;z-index:100;background:#1B75CE;width:100%;">
@@ -14,7 +14,7 @@
             <li><img src="mundo.png" style="height:40px;margin:0 1em 0 0;padding-top:6px;"></li>
         </ul>
         <!-- Fin de botón -->
-        
+
         <!-- Menú para vistas de escritorio y pantallas grandes -->
         <ul class="menu horizontal blue push-left hide-small hide-tiny hide-medium">
             <li class="condensed-300"><a href="inicio.php">Inicio</a></li>
@@ -24,15 +24,22 @@
                     <ul class="submenu">
                         <li class="condensed-300"><a href="usuarios.php">Usuarios</a></li>
                         <li class="condensed-300"><a href="status.php">Status</a></li>
+                        <li class="condensed-300"><a href="areas.php">Areas</a></li>
+                        <li class="condensed-300"><a href="tipo_productos.php">Tipo Productos</a></li>
+                    </ul>
+                </li>
+                <li class="condensed-300">
+                    <a href="#">Almacen</a>
+                    <ul class="submenu">
+                        <li class="condensed-300"><a href="productos.php">Productos</a></li>
                     </ul>
                 </li>
             <?php } ?>
-            <li class="condensed-300"><a href="#">item 3</a></li>
             <li class="condensed-300"><a href="#">item 4</a></li>
             <li class="condensed-300"><a href="#">item 5</a></li>
         </ul>
         <!-- Fin de Menú -->
-        
+
         <!-- Menú de Sesión -->
         <ul class="menu horizontal blue push-right">
             <li class="condensed-300">
@@ -44,7 +51,7 @@
             </li>
         </ul>
         <!-- Fin de Menú de Sesión -->
-        
+
     </nav>
 </div>
 
@@ -59,6 +66,7 @@
                     <ul class="submenu">
                         <li class="condensed-300"><a href="usuarios.php">Usuarios</a></li>
                         <li class="condensed-300"><a href="status.php">Status</a></li>
+        
                     </ul>
                 </li>
             <?php } ?>
