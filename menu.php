@@ -25,6 +25,7 @@
                         <li class="condensed-300"><a href="usuarios.php">Usuarios</a></li>
                         <li class="condensed-300"><a href="status.php">Status</a></li>
                         <li class="condensed-300"><a href="areas.php">Areas</a></li>
+                        <li class="condensed-300"><a href="tipo_productos.php">Tipo Productos</a></li>
                     </ul>
                 </li>
                 <li class="condensed-300">
