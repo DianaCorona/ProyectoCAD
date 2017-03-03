@@ -3,21 +3,20 @@
     include_once 'DBClass.php';
     $consultas = new DBClass();
     //Varibles Globales del Archivo (pueden ser omitidas, optimizadas para catálogos solo cambiar nombre de tabla y el ID de la misma.
-    $tablabase="areas";
-    $idbase="id_areas";
+    $tablabase="erareas";
+    $idbase="id_area";
 
     //Variables Globales del Archivo (pueden ser omitidas) texto desplegado en los formularios de catálogos
-    $textoencabezado="Areas";
-    $textoencabezadoforms="Areas";
+    $textoencabezado="Erareas";
+    $textoencabezadoforms="Erareas";
 
     //Procesamiento del POST para guardar información
     if(isset($_POST['save'])){
         //obtención de variables POST y guardado en forma de Array $data
 
-        $data['nombre_area'] = $_POST['nombre_area'];
-        $data['descripcion'] = $_POST['descripcion'];
-        $data['fecha_alta'] = $_POST['fecha_alta'];
-        $data['id_responsable'] = $_POST['id_responsable'];
+
+        $data['id_areas_entrega'] = $_POST['id_areas_entrega'];
+        $data['id_areas_recepcion'] = $_POST['id_areas_recepcion'];
 
 
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
@@ -35,9 +34,8 @@
     //Procesamiento del POST para actualizar información
     if(isset($_POST['update'])){
         //obtención de variables POST y guardado en forma de Array $data
-        $data['nombre_area'] = $_POST['nombre_area'];
-        $data['descripcion'] = $_POST['descripcion'];
-        $data['id_responsable'] = $_POST['id_responsable'];
+        $data['id_areas_entrega'] = $_POST['id_areas_entrega'];
+        $data['id_areas_recepcion'] = $_POST['id_areas_recepcion'];
 
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_update($tablabase, $data, $idbase."='".$_POST['update']."'");
@@ -137,7 +135,7 @@
         <script>
             $(document).ready(function(){
                 //Página a la que se realizarán las peticiones AJAX y solicitudes de información
-                var paginaact="areas.php";
+                var paginaact="erareas.php";
 
                 //Configuración de la tabla DataTables para muestreo de información
                 var table = $('#informacion').dataTable( {
@@ -180,34 +178,44 @@
                     if(!valida("#FormAgrega")){
                         return;
                     }
-                    var d = new Date();
-                    var Fecha=d.getFullYear() + "-"+(d.getMonth()+1)+"-"+d.getDay();
 
-                    var nombre_area= $('#nombre_area').val();
-                    var descripcion= $('#descripcion').val();
-                    var fecha_alta= Fecha;
-                    var posicion=document.getElementById('id_responsable').options.selectedIndex;
-                    var id_respons=document.getElementById('id_responsable').options[posicion].text;
-                    //Explotar arreglo
-                    var arr= id_respons.split(" ");
-                    var id_responsable;
+                    // var id_areas_entrega= $('#id_areas_entrega').val();
+                    // var id_areas_recepcion= $('#id_areas_recepcion').val();
 
-                    function id_usua(arr1,arr2,arr3){
-                      var pr= $.get("consulta.php",{selec:1,nombre:arr1,appaterno:arr2,mmaterno:arr3},procesar, "json");
+                    var posicion_entrega=document.getElementById('id_areas_entrega').options.selectedIndex;
+                    var id_entrega=document.getElementById('id_areas_entrega').options[posicion_entrega].text;
 
+                    var posicion_recepcion=document.getElementById('id_areas_recepcion').options.selectedIndex;
+                    var id_recepcion=document.getElementById('id_areas_recepcion').options[posicion_recepcion].text;
 
+                    var id_areas_recepcion;
+                    function id_areas(id_recepcion){
+                      var pr= $.get("consulta.php",{selec:2,id_recepcion:id_recepcion},marcar_entrega, "json");
                     };
-                    function procesar(respuesta){
-                    id_responsable=respuesta[0];
+                    function marcar_entrega(respuesta){
+                    id_areas_entrega=respuesta[0];
                     var formData = new FormData();
                     formData.append('save','true');
-                    formData.append('nombre_area',nombre_area);
-                    formData.append('descripcion', descripcion);
-                    formData.append('id_responsable',id_responsable);
-                    formData.append('fecha_alta',fecha_alta);
-                    senddata(formData);
+                    formData.append('id_areas_entrega',id_areas_entrega);
+                    formData.append('id_areas_recepcion',id_areas_recepcion);
+                    //senddata(formData);
                     }
-                    id_responsabl=id_usua(arr[0],arr[1],arr[2]);
+
+                    function id_areas1(id_recepcion){
+                      var pr= $.get("consulta.php",{selec:3,id_entrega:id_recepcion},marcar_recepcion, "json");
+                    };
+
+                    function marcar_recepcion(respuesta){
+                    id_areas_recepcion=respuesta[0];
+                    var formData = new FormData();
+                    formData.append('save','true');
+                    formData.append('id_areas_entrega',id_areas_entrega);
+                    formData.append('id_areas_recepcion',id_areas_recepcion);
+                    senddata(formData);
+
+                    }
+                    id_areas(id_entrega);
+                    id_areas1(id_recepcion);
 
 
 
@@ -256,8 +264,8 @@
                 $('#informacion').on('click','a.modificar',function(e){
                     e.preventDefault();
                     var id = $(this).attr('id-accion');
-                    var nombre_area= "";
-                    var descripcion="";
+                    var id_areas_entrega= "";
+                    var id_areas_recepcion="";
 
 
                     var infoData = new FormData();
@@ -266,17 +274,15 @@
                     infoData.append('id',id);
 
                     jQuery.each(obtener_info(infoData), function(){
-                      nombre_area=this.nombre_area;
-                      descripcion=this.descripcion;
-
-
+                      id_areas_entrega=this.id_areas_entrega;
+                      id_areas_recepcion=this.id_areas_recepcion;
 
                     });
 
                     $('#idc').val(id);
-                    $('#nombre_areac').val(nombre_area);
-                    $('#descripcionc').val(descripcion);
-                    $('#id_responsablec').val(id_responsable);
+                    $('#id_areas_entregac').val(id_areas_entregac);
+                    $('#id_areas_recepcionc').val(id_areas_recepcionc);
+
 
 
 
@@ -296,33 +302,62 @@
                     }
 
                     var id= $('#idc').val();
-                    var nombre_area= $('#nombre_areac').val();
-                    var descripcion= $('#descripcionc').val();
-                    var posicion=document.getElementById('id_responsablec').options.selectedIndex;
-                    var id_responsa=document.getElementById('id_responsablec').options[posicion].text;
-                    var arr= id_responsa.split(" ");
+                    var posicion_entrega=document.getElementById('id_areas_entregac').options.selectedIndex;
+                    var id_entrega=document.getElementById('id_areas_entregac').options[posicion_entrega].text;
 
-                    function id_usuam(arr1,arr2,arr3){
-                      var pr= $.get("consulta.php",{selec:1,nombre:arr1,appaterno:arr2,mmaterno:arr3},procesar, "json");
+                    var posicion_recepcion=document.getElementById('id_areas_recepcionc').options.selectedIndex;
+                    var id_recepcion=document.getElementById('id_areas_recepcionc').options[posicion_recepcion].text;
+                    var id_areas_recepcion;
+                    var id_areas_entrega;
 
+                    function id_areas2(id_recepcion){
+                      var pr= $.get("consulta.php",{selec:2,id_recepcion:id_recepcion},function(respuestae){
+                        id_areas_entrega=respuestae[0];
+                        var formData = new FormData();
+                        formData.append('update',id);
 
+                        formData.append('id_areas_entrega',id_areas_entrega);
+                        formData.append('id_areas_recepcion',id_areas_recepcion);
+                        //senddata(formData);
+                      }, "json");
                     };
-                    function procesar(respuesta){
-                    id_responsable=respuesta[0];
-                    var formData = new FormData();
-                    formData.append('update',id);
-                    formData.append('nombre_area',nombre_area);
-                    formData.append('descripcion', descripcion);
-                    formData.append('id_responsable',id_responsable);
-                    senddata(formData);
-                    }
+                    // function marcar_entregas(respuestae){
+                    // id_areas_entrega=respuestae[0];
+                    // formData.append('id_areas_entrega',id_areas_entrega);
+                    //
+                    //
+                    // }
 
-                    id_responsablm=id_usuam(arr[0],arr[1],arr[2]);
+                    function id_areas3(id_recepcion){
+                      var pr= $.get("consulta.php",{selec:3,id_entrega:id_recepcion},function (respuestar){
+                        id_areas_recepcion=respuestar[0];
+                        var formData = new FormData();
+                        formData.append('update',id);
+
+                        formData.append('id_areas_entrega',id_areas_entrega);
+                        formData.append('id_areas_recepcion',id_areas_recepcion);
+                        senddata(formData);
+
+                      }, "json");
+                    };
+
+                    // function marcar_recepcions(respuestar){
+                    // id_areas_recepcion=respuestar[0];
+                    // formData.append('id_areas_recepcion',id_areas_recepcion);
+                    // }
+
+                    id_areas2(id_entrega);
+                    id_areas3(id_recepcion);
+
+
+
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formmodificar');
                         var modalObj = new Modal( modalElement );
                         modalObj.dismiss();
                     });
+
+
                 });
 
                 //********************Ejecutar Acciones Ajax********************//
@@ -453,24 +488,21 @@
                         <table id="informacion" class="condensed-300">
                             <thead>
                                 <tr class="nohov">
-                                    <th>Nombre Area</th>
-                                    <th>Descripcion</th>
-                                    <th>Fecha Alta </th>
-                                    <th>Responsable</th>
+                                    <th>Id Area</th>
+                                    <th>Recepción</th>
+                                    <th>Entrega</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                     //$data2=$consultas->obtener_select_data_personalizado("nombre,appaterno,apmaterno","usuarios");
-                                    $data=$consultas->obtener_datos("areas");
+                                    $data=$consultas->obtener_datos("erareas");
                                     while ($row = mysql_fetch_array($data)){
                                         echo '<tr>
-                                            <td>'.$row['nombre_area'].'</td>
-                                            <td>'.$row['descripcion'].'</td>
-                                            <td>'.$row['fecha_alta'].'</td>
-                                            <td> '.$consultas->obtener_datos_condicion_l("usuarios","id_usuarios=".$row['id_responsable']."").'
-                                            </td>
+                                            <td>'.$row['id_area'].'</td>
+                                            <td> '.$consultas->obtener_datos_condicion_a("areas","id_areas=".$row['id_areas_entrega']."").'</td>
+                                            <td> '.$consultas->obtener_datos_condicion_a("areas","id_areas=".$row['id_areas_recepcion']."").'</td>
                                             <td style="width:50px; min-width:50px; text-align:right;">
                                                 <a id-accion="'.$row[$idbase].'" class="modificar"><span class="fa fa-pencil-square-o" title="Modificar"></span></a>
                                                 <a id-accion="'.$row[$idbase].'" class="eliminar"><span class="fa fa-trash-o" title="Eliminar"></span></a>
@@ -519,28 +551,30 @@
                                         </div>
                                     </div>
                                     -->
-                                    <div class="control-group gutters">
-                                        <label for="nombre_area" class="all-40">Nombre Area</label>
-                                        <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="nombre_area"/>
-                                        </div>
-                                    </div>
+
                                     <!--FIN Formato del bloque por campo....-->
 
                                     <div class="control-group gutters">
-                                        <label for="descripcion" class="all-40">Descripcion</label>
-                                        <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="descripcion"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group gutters">
-                                       <label for="responsable" class="all-40">Responsable</label>
+                                       <label for="responsable" class="all-40">Area Recepción</label>
                                        <div class="all-60">
                                            <?php
-                                              $data2=$consultas->obtener_select_data_personalizado("nombre,appaterno,apmaterno","usuarios");
+                                              $data2=$consultas->obtener_select_data_personalizado_area("nombre_area","areas");
                                               $row=0;
                                               while ($row==0){
-                                                echo '<select class=" all-100 required " data-placeholder="Seleccione Usuario" id="id_responsable">'.$data2.'</select>';
+                                                echo '<select class=" all-100 required " data-placeholder="Seleccione Un area" id="id_areas_recepcion">'.$data2.'</select>';
+                                                $row=1;
+                                              }
+                                            ?>
+                                       </div>
+                                   </div>
+                                    <div class="control-group gutters">
+                                       <label for="responsable" class="all-40">Area Entrega</label>
+                                       <div class="all-60">
+                                           <?php
+                                              $data2=$consultas->obtener_select_data_personalizado_area("nombre_area","areas");
+                                              $row=0;
+                                              while ($row==0){
+                                                echo '<select class=" all-100 required " data-placeholder="Seleccione Un area" id="id_areas_entrega">'.$data2.'</select>';
                                                 $row=1;
                                               }
                                             ?>
@@ -565,32 +599,35 @@
                             <div class="modal-body">
                                 <form id="FormModifica" class="ink-form all-100 content-center" action="" method="post">
                                     <h5>Modificar <?php echo $textoencabezadoforms; ?></h5>
-                                    <div class="control-group gutters">
-                                        <label for="nombre_areac" class="all-40">Nombre Area</label>
-                                        <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="nombre_areac"/>
-                                        </div>
-                                    </div>
-                                     <div class="control-group gutters">
-                                        <label for="descripcionc" class="all-40">Descripción</label>
-                                        <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="descripcionc"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group gutters">
-                                       <label for="responsablec" class="all-40">Responsable</label>
-                                       <div class="all-60">
-                                           <?php
-                                              $data2=$consultas->obtener_select_data_personalizado("nombre,appaterno,apmaterno","usuarios");
-                                              $row=0;
-                                              while ($row==0){
-                                                echo '<select class=" all-100 required " data-placeholder="Seleccione Usuario" id="id_responsablec">'.$data2.'</select>';
-                                                $row=1;
-                                              }
 
-                                            ?>
-                                       </div>
-                                   </div>
+                          <div class="control-group gutters">
+                             <label for="responsable" class="all-40">Area Recepción</label>
+                             <div class="all-60">
+                                 <?php
+                                    $data2=$consultas->obtener_select_data_personalizado_area("nombre_area","areas");
+                                    $row=0;
+                                    while ($row==0){
+                                      echo '<select class=" all-100 required " data-placeholder="Seleccione Un area" id="id_areas_recepcionc">'.$data2.'</select>';
+                                      $row=1;
+                                    }
+                                  ?>
+                             </div>
+                         </div>
+                          <div class="control-group gutters">
+                             <label for="responsable" class="all-40">Area Entrega</label>
+                             <div class="all-60">
+                                 <?php
+                                    $data2=$consultas->obtener_select_data_personalizado_area("nombre_area","areas");
+                                    $row=0;
+                                    while ($row==0){
+                                      echo '<select class=" all-100 required " data-placeholder="Seleccione Un area" id="id_areas_entregac">'.$data2.'</select>';
+                                      $row=1;
+                                    }
+                                  ?>
+                             </div>
+                         </div>
+
+
                                     <input type="hidden" id="idc" name="idc" value=""/>
                                 </form>
                             </div>
