@@ -16,7 +16,7 @@
         //obtención de variables POST y guardado en forma de Array $data
         $data['usuario'] = $_POST['nombre'];
         $data['password'] = md5(trim($_POST['password']));
-        $data['privilegios'] = $_POST['privilegios'];
+        $data['id_privilegios'] = $_POST['privilegios'];
         $data['nombre'] = $_POST['nombreusr'];
         $data['appaterno'] = $_POST['appaterno'];
         $data['apmaterno'] = $_POST['apmaterno'];
@@ -41,7 +41,7 @@
     if(isset($_POST['update'])){
         //obtención de variables POST y guardado en forma de Array $data
         $data['usuario'] = $_POST['nombre'];
-        $data['privilegios'] = $_POST['privilegios'];
+        $data['id_privilegios'] = $_POST['privilegios'];
         $data['nombre'] = $_POST['nombreusr'];
         $data['appaterno'] = $_POST['appaterno'];
         $data['apmaterno'] = $_POST['apmaterno'];
@@ -499,9 +499,9 @@
                                             <td>'.$row['apmaterno'].'</td>
 
                                             <td>';
-                                                if($row['privilegios']==1){
+                                                if($row['id_privilegios']==1){
                                                     echo 'Administrador';
-                                                }else if($row['privilegios']==2){
+                                                }else if($row['id_privilegios']==2){
                                                     echo 'Otros';
                                                 }
                                                 echo '</td>                                   
@@ -605,7 +605,7 @@
                                             <input  class="all-100 " type="text" id="apmaterno"/>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="control-group gutters">
                                         <label for="privilegios" class="all-40" >Privilegios</label>
                                         <div style="" class="all-60">

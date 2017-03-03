@@ -32,6 +32,7 @@
                     <a href="#">Almacen</a>
                     <ul class="submenu">
                         <li class="condensed-300"><a href="productos.php">Productos</a></li>
+                        <li class="condensed-300"><a href="almacen.php">Almacen</a></li>
                     </ul>
                 </li>
             <?php } ?>

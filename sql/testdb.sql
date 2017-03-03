@@ -181,6 +181,7 @@ INSERT INTO `tipo_productos` (`id_tipo_productos`, `nombre_tipo_producto`) VALUE
 --
 
 CREATE TABLE `usuarios` (
+
   `id_usuarios` int(11) NOT NULL,
   `usuario` varchar(45) DEFAULT NULL,
   `appaterno` varchar(45) DEFAULT NULL,
@@ -193,7 +194,6 @@ CREATE TABLE `usuarios` (
   `password` varchar(45) DEFAULT NULL,
   `nombre` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
 --
 -- Volcado de datos para la tabla `usuarios`
 --

@@ -4,19 +4,28 @@
     $consultas = new DBClass();
     
     //Varibles Globales del Archivo (pueden ser omitidas, optimizadas para catálogos solo cambiar nombre de tabla y el ID de la misma.
-    $tablabase="tipo_productos";
-    $idbase="id_tipo_productos";
-    
+    $tablabase="almacenes";
+    $idbase="id_almacen";
+   // $tabla="usuarios";
+   // $resultado;
     //Variables Globales del Archivo (pueden ser omitidas) texto desplegado en los formularios de catálogos
-    $textoencabezado="Tipos de productos";
-    $textoencabezadoforms="Tipo de producto";
+    $textoencabezado="Almacen";
+    $textoencabezadoforms="Almacen";
     
     //Procesamiento del POST para guardar información 
     if(isset($_POST['save'])){
+        
+//        $nombre = $_POST['id_responsable'];
+//        $informacion= $consultas->obtener_nombres($tabla,$nombre); 
+//        
+//        echo (json_encode ($informacion));
+//        die();
+//        
         //obtención de variables POST y guardado en forma de Array $data
         //$data['id_tipo_productos'] = $_POST['id_tipo_productos'];
-        $data['nombre_tipo_producto'] = $_POST['nombre_tipo_producto'];
-        
+        $data['nombre_almacen'] = $_POST['nombre_almacen'];
+        $data['descripcion'] = $_POST['descripcion'];
+        $data['id_responsable'] = $_POST['id_responsable'];
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_insert($tablabase, $data);
         die();
@@ -33,7 +42,9 @@
     if(isset($_POST['update'])){
         //obtención de variables POST y guardado en forma de Array $data
         //$data['id_status'] = $_POST['id_status'];
-        $data['nombre_tipo_producto'] = $_POST['nombre_tipo_producto'];
+        $data['nombre_almacen'] = $_POST['nombre_almacen'];
+        $data['descripcion'] = ($_POST['descripcion']);
+        $data['id_responsable'] = $_POST['id_responsable'];
         
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data 
         echo $consultas->to_update($tablabase, $data, $idbase."='".$_POST['update']."'");
@@ -133,7 +144,7 @@
         <script>
             $(document).ready(function(){
                 //Página a la que se realizarán las peticiones AJAX y solicitudes de información
-                var paginaact="tipo_productos.php";
+                var paginaact="almacen.php";
                 
                 //Configuración de la tabla DataTables para muestreo de información                              
                 var table = $('#informacion').dataTable( {  
@@ -178,8 +189,14 @@
                     } 
                      
                     //var id_status= $('#id_status').val();
-                    var nombreproducto= $('#nombreproducto').val();
-                                   
+                    var nombrealmacen= $('#nombrealmacen').val();
+                    var descripcion= $('#descripcion').val();
+                    var idresponsable= $('#idresponsable').val();
+                  
+                    
+                    
+                    
+                    
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formagregar');
                         var modalObj = new Modal( modalElement );
@@ -189,7 +206,9 @@
                     var formData = new FormData();
                     formData.append('save','true');
                     //formData.append('id_status',nombre);
-                    formData.append('nombre_tipo_producto', nombreproducto);
+                    formData.append('nombre_almacen',nombrealmacen);
+                    formData.append('descripcion',descripcion);
+                    formData.append('id_responsable',idresponsable);
                     
                     senddata(formData);
                 });
@@ -230,7 +249,9 @@
                 
                     e.preventDefault();  
                     var id = $(this).attr('id-accion'); 
-                    var nombreproducto = ""; 
+                    var nombrealmacen = "";
+                    var descripcion = "";
+                    var idresponsable = "";
                            
                     var infoData = new FormData();
                     infoData.append('obtener_info',"<?php echo $tablabase ?>");
@@ -239,11 +260,15 @@
                     
                     jQuery.each(obtener_info(infoData), function(){ 
                         //id_status= this.id_status;
-                        nombre_tipo_producto= this.nombreproducto;
+                        nombre_almacen= this.nombre_almacen;
+                        descripcion= this.descripcion;
+                        id_responsable= this.id_responsable;
                     });
                            
                     $('#ids').val(id);
-                    $('#nombreproductos').val(nombreproducto);                      
+                    $('#nombrealmacens').val(nombre_almacen);
+                    $('#descripcions').val(descripcion);
+                    $('#idresponsables').val(id_responsable);
                     
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formmodificar');
@@ -262,8 +287,10 @@
                     } 
                     
                     var id= $('#ids').val();
+                    var nombrealmacen= $('#nombrealmacens').val();
+                    var descripcion= $('#descripcions').val();
+                    var idresponsable= $('#idresponsables').val();
                     
-                    var nombreproducto= $('#nombreproductos').val();
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formmodificar');
                         var modalObj = new Modal( modalElement );
@@ -272,7 +299,9 @@
                     
                     var formData = new FormData();
                     formData.append('update',id);
-                     formData.append('nombre_tipo_producto',nombreproducto);
+                    formData.append('nombre_almacen',nombrealmacen);
+                    formData.append('descripcion',descripcion);
+                    formData.append('id_responsable',idresponsable);
                     
                     senddata(formData);
                 });
@@ -325,7 +354,7 @@
                     
                     $(form+' input.required').each(function(){   
                         $(this).removeClass('errorstyle');
-                        if($(this).val()=="" && $(this).attr('id_tipo_productos')){
+                        if($(this).val()=="" && $(this).attr('id_almacen')){
                             $(this).addClass('errorstyle');  
                             $(this).attr('placeholder','Campo Requerido'); 
                             valid=false;
@@ -334,7 +363,7 @@
                     
                     $(form+' select.required').each(function(){   
                         $(this).removeClass('errorstyle');
-                        if($(this).val()=="" && $(this).attr('id_tipo_productos')){
+                        if($(this).val()=="" && $(this).attr('id_almacen')){
                             $(this).addClass('errorstyle');  
                             valid=false;
                         }                        
@@ -406,17 +435,21 @@
                             <thead>
                                 <tr class="nohov">   
                                     <th>Id</th> 
+                                    <th>Nombre de almacen</th>
                                     <th>Descripcion</th>
+                                    <th>Responsable</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                    $data=$consultas->obtener_datos("tipo_productos");
+                                    $data=$consultas->obtener_datos("almacenes");
                                     while ($row = mysql_fetch_array($data)){
                                         echo '<tr>
-                                            <td>'.$row['id_tipo_productos'].'</td>
-                                            <td>'.$row['nombre_tipo_producto'].'</td>
+                                            <td>'.$row['id_almacen'].'</td>
+                                            <td>'.$row['nombre_almacen'].'</td>
+                                            <td>'.$row['descripcion'].'</td>
+                                            <td>'.$row['id_responsable'].'</td>
                                           
                                             <td style="width:50px; min-width:50px; text-align:right;">
                                                 <a id-accion="'.$row[$idbase].'" class="modificar"><span class="fa fa-pencil-square-o" title="Modificar"></span></a> 
@@ -469,12 +502,26 @@
                                 
                                     <!--FIN Formato del bloque por campo....-->
 
-                                    <div class="control-group gutters">     
-                                        <label for="nombreproducto" class="all-40">Nombre del tipo de productos</label>
+                                    <div class="control-group gutters">
+                                        <label for="nombrealmacen" class="all-40">Nombre de almacen</label>
                                         <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="nombreproducto"/>
+                                            <input  class="all-100 required" type="text" id="nombrealmacen"/>
                                         </div>
-                                    </div>   
+                                    </div>
+                                    <!--FIN Formato del bloque por campo....-->
+
+                                    <div class="control-group gutters">
+                                        <label for="descripcion" class="all-40">Descripcion</label>
+                                        <div class="all-60">
+                                            <input  class="all-100 required" type="text" id="descripcion"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group gutters">
+                                        <label for="idresponsable" class="all-40">Responsable</label>
+                                        <div class="all-60">
+                                            <input  class="all-100 required" type="text" id="idresponsable"/>
+                                        </div>
+                                    </div>  
                         
                                 </form>                        
                             </div>
@@ -494,12 +541,26 @@
                                 <form id="FormModifica" class="ink-form all-100 content-center" action="" method="post">
                                     <h5>Modificar <?php echo $textoencabezadoforms; ?></h5>
                                    
-                                     <div class="control-group gutters">     
-                                        <label for="nombreproductos" class="all-40">Nombre del tipo de productos</label>
+                                      <div class="control-group gutters">
+                                        <label for="nombrealmacens" class="all-40">Nombre de almacen</label>
                                         <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="nombreproductos"/>
+                                            <input  class="all-100 required" type="text" id="nombrealmacens"/>
                                         </div>
-                                    </div>                           
+                                    </div>
+                                    <!--FIN Formato del bloque por campo....-->
+
+                                    <div class="control-group gutters">
+                                        <label for="descripcions" class="all-40">Descripcion</label>
+                                        <div class="all-60">
+                                            <input  class="all-100 required" type="text" id="descripcions"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group gutters">
+                                        <label for="idresponsables" class="all-40">Responsable</label>
+                                        <div class="all-60">
+                                            <input  class="all-100 required" type="text" id="idresponsables"/>
+                                        </div>
+                                    </div>                          
                                     
                                     <input type="hidden" id="ids" name="ids" value=""/>
                                 </form>                        
@@ -536,4 +597,4 @@
         $('#precargadiv').fadeOut('fast');
 </script>
 
-</html>
+</html>  

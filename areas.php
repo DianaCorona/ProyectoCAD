@@ -18,6 +18,7 @@
         $data['nombre_area'] = $_POST['nombre_area'];
         $data['descripcion'] = $_POST['descripcion'];
         $data['fecha_alta'] = $_POST['fecha_alta'];
+        //$data['id_encargado'] = $_POST['id_encargado'];
 
 
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
@@ -37,7 +38,7 @@
         //obtención de variables POST y guardado en forma de Array $data
         $data['nombre_area'] = $_POST['nombre_area'];
         $data['descripcion'] = $_POST['descripcion'];
-
+        //$data['id_encargado'] = $_POST['id_encargado'];
 
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_update($tablabase, $data, $idbase."='".$_POST['update']."'");
@@ -186,6 +187,8 @@
                     var nombre_area= $('#nombre_area').val();
                     var descripcion= $('#descripcion').val();
                     var fecha_alta= Fecha;
+                    // var posicion=document.getElementById('id_encargado').options.selectedIndex;
+                    // var id_encargado=document.getElementById('id_encargado').options[posicion].text;
 
 
                     // $data['nombre_area'] = $_POST['nombre_area'];
@@ -536,7 +539,7 @@
                                     </div>
 
 
-                                    
+
 
                                     <input type="hidden" id="idc" name="idc" value=""/>
                                 </form>
