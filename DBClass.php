@@ -109,6 +109,25 @@
                 return 'Error al obtener la información';
             }
         }  
+        //select id de ultimo registro  from tabla
+        public function obtener_ultimo_dato($tabla){
+            if($select = $this->link->query("select * from ".$tabla." order by 1 desc limit 1;")){
+                $row =mysql_fetch_array($select);                  
+                return $row[0];                
+            }else{
+                return 'Error al obtener la información';
+            }
+        }  
+        //select columna de usuario segun id
+        public function obtener_por_id($tabla, $id, $col){
+            if($select = $this->link->query("select ".$col." from ".$tabla." where id_".$tabla."=".$id.";")){
+                $row =mysql_fetch_array($select);                  
+                return $row[$col];
+               
+            }else{
+                return 'Error al obtener la información';
+            }
+        }
         
         //select from tabla * condicionado //
         public function obtener_datos_condicion($tabla,$where){                     

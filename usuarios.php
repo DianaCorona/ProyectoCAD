@@ -25,8 +25,18 @@
         $data['id_areas'] = $_POST['id_areas'];
         $data['id_status'] = $_POST['id_status'];
 
+
+        
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_insert($tablabase, $data);
+
+         $bit = $consultas->obtener_ultimo_dato("usuarios");
+         $bita['fecha_modificacion'] = $_POST['fecha_alta'];
+         $bita['id_status'] = $_POST['id_status'];
+         $bita['id_usuarios'] = $bit;        
+        
+         echo $consultas->to_insert('bitacora_usuarios', $bita);
+
         die();
     }
 
@@ -54,8 +64,16 @@
             $data['password'] = md5(trim($_POST['password']));
         }
 
+        $antes = $consultas->obtener_por_id("usuarios", $_POST['update'],"id_status");
+        if ($data['id_status'] != $antes) {
+            $bita['fecha_modificacion'] = $_POST['fecha_modificacion'];
+            $bita['id_status'] = $_POST['id_status'];
+            $bita['id_usuarios'] = $_POST['update']; 
+            echo $consultas->to_insert('bitacora_usuarios', $bita);
+        }
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_update($tablabase, $data, $idbase."='".$_POST['update']."'");
+
         die();
     }
 
@@ -277,7 +295,6 @@
                     var id_areas = "";
                     var id_status = "";
 
-
                     var infoData = new FormData();
                     infoData.append('obtener_info',"usuarios");
                     infoData.append('id',id);
@@ -316,6 +333,9 @@
                     if(!valida("#FormModifica")){
                         return;
                     }
+                    var d = new Date();
+                    var Fecha=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+                    var fecha_modificacion= Fecha;
 
                     var id= $('#idm').val();
                     var usuario= $('#nombrem').val();
@@ -333,6 +353,7 @@
                         modalObj.dismiss();
                     });
 
+
                     var formData = new FormData();
                     formData.append('update',id);
                     formData.append('nombre',usuario);
@@ -343,6 +364,7 @@
                     formData.append('password',password);
                     formData.append('id_areas',id_areas);
                     formData.append('id_status',id_status);
+                    formData.append('fecha_modificacion',fecha_modificacion);
                     senddata(formData);
                 });
 
@@ -489,8 +511,7 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    $data=$consultas->obtener_datos("usuarios");                          
-                                    
+                                    $data=$consultas->obtener_datos("usuarios");  
                                     while ($row = mysql_fetch_array($data)){
                                         echo '<tr>
                                             <td>'.$row['usuario'].'</td>
@@ -507,22 +528,14 @@
                                                 echo '</td>                                   
 
                                             <td>';
-                                                $area=$consultas->obtener_datos("areas");
-                                                while ($ar= mysql_fetch_array($area)) {                                                    
-                                                    if($ar['id_areas']==$row['id_areas']){
-                                                        echo $ar['nombre_area'];
-                                                    }
-                                                }
+                                                $area=$consultas->obtener_por_id("areas",$row['id_areas'],"nombre_area");
+                                                echo $area;
 
                                             echo '</td>
 
                                             <td>';
-                                                $status=$consultas->obtener_datos("status");
-                                                while ($stat = mysql_fetch_array($status)){
-                                                    if($stat['id_status']==$row['id_status']){
-                                                        echo $stat['descripcion'];
-                                                    }
-                                                }
+                                                $status=$consultas->obtener_por_id("status",$row['id_status'],"descripcion");
+                                                echo $status;
                                             echo '</td>
                                             <td>'.$row['fecha_alta'].'</td>
                                             <td style="width:50px; min-width:50px; text-align:right;">
@@ -624,7 +637,7 @@
                                                 <?php 
                                                     $area=$consultas->obtener_datos("areas");
                                                     while ($ar= mysql_fetch_array($area)) { ?>
-                                                        <option value="<?php echo $ar['id_areas'];?>"> <?php $ar['nombre_area']; ?> </option> 
+                                                        <option value="<?php echo $ar['id_areas'];?>"> <?php echo $ar['nombre_area']; ?> </option> 
                                                 <?php }?>
                                             </select>
                                         </div>

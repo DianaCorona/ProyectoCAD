@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 02-03-2017 a las 13:50:27
+-- Tiempo de generación: 03-03-2017 a las 08:55:57
 -- Versión del servidor: 5.5.42
 -- Versión de PHP: 5.6.10
 
@@ -45,15 +45,17 @@ CREATE TABLE `areas` (
   `descripcion` varchar(45) DEFAULT NULL,
   `fecha_alta` date DEFAULT NULL,
   `id_responsable` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `areas`
 --
 
 INSERT INTO `areas` (`id_areas`, `nombre_area`, `descripcion`, `fecha_alta`, `id_responsable`) VALUES
-(1, 'administrativa', NULL, NULL, 0),
-(2, 'finanzas', NULL, NULL, 1);
+(3, 'Recursos Humanos', 'Recursos Humanos', '2017-03-04', 3),
+(12, 'fdff', 'sdfasdf', '2017-03-05', 3),
+(13, 'web', '123', '2017-03-05', 2),
+(14, 'Redes', 'Redes', '2017-03-05', 2);
 
 -- --------------------------------------------------------
 
@@ -63,7 +65,7 @@ INSERT INTO `areas` (`id_areas`, `nombre_area`, `descripcion`, `fecha_alta`, `id
 
 CREATE TABLE `area_almacen` (
   `id_area_almacen` int(11) NOT NULL,
-  `id_area` int(11) NOT NULL,
+  `id_areas` int(11) NOT NULL,
   `id_almacen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -100,8 +102,8 @@ CREATE TABLE `campos_tipo_producto` (
 
 CREATE TABLE `erareas` (
   `id_area` int(11) NOT NULL,
-  `id_area_entrega` int(11) NOT NULL,
-  `id_area_recepcion` int(11) NOT NULL
+  `id_areas_entrega` int(11) NOT NULL,
+  `id_areas_recepcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -125,7 +127,7 @@ CREATE TABLE `privilegios_area` (
 CREATE TABLE `privilegios_sistema` (
   `id_privilegios_sistema` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `id_area` int(11) NOT NULL,
+  `id_areas` int(11) NOT NULL,
   `id_privilegio_area` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -182,7 +184,6 @@ INSERT INTO `tipo_productos` (`id_tipo_productos`, `nombre_tipo_producto`) VALUE
 --
 
 CREATE TABLE `usuarios` (
-
   `id_usuarios` int(11) NOT NULL,
   `usuario` varchar(45) DEFAULT NULL,
   `appaterno` varchar(45) DEFAULT NULL,
@@ -190,21 +191,21 @@ CREATE TABLE `usuarios` (
   `fecha_alta` date DEFAULT NULL,
   `id_status` int(11) DEFAULT NULL,
   `id_areas` int(11) DEFAULT NULL,
-  `privilegios` int(11) DEFAULT NULL,
   `id_privilegios` int(11) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
-  `nombre` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `nombre` varchar(45) DEFAULT NULL,
+  `privilegios` int(11) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuarios`, `usuario`, `appaterno`, `apmaterno`, `fecha_alta`, `id_status`, `id_areas`, `privilegios`, `id_privilegios`, `password`, `nombre`) VALUES
-(1, 'admin', 'admin', 'asdfghj', '2017-02-04', 1, 1, 1, 1, '21232f297a57a5a743894a0e4a801fc3', 'admin'),
-(2, 'Diana', 'Corona', 'García', '2017-02-04', 2, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Diana'),
-(10, 'Pats', '', '', '2017-03-02', 3, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Pats'),
-(11, 'Corona', 'Corona', 'Corona', '2017-03-02', 1, 2, 1, NULL, '5102b6478a52b43ec33b46e031e63c8f', 'Corona'),
-(13, 'status', 'status', 'status', '2017-03-02', 1, 1, 1, NULL, '9acb44549b41563697bb490144ec6258', 'status');
+INSERT INTO `usuarios` (`id_usuarios`, `usuario`, `appaterno`, `apmaterno`, `fecha_alta`, `id_status`, `id_areas`, `id_privilegios`, `password`, `nombre`, `privilegios`) VALUES
+(1, 'admin', '', '', '2017-02-04', NULL, NULL, 1, '21232f297a57a5a743894a0e4a801fc3', 'Administrador', NULL),
+(2, 'Luis', 'Perez', 'Lopez', '2017-02-04', NULL, NULL, 1, '502ff82f7f1f8218dd41201fe4353687', 'Luis', NULL),
+(3, 'Luis', 'Sabanero', 'Esquivel', '2017-02-04', NULL, NULL, 1, '3f128e570b3a9009d7b52a0523af43dd', 'Alfonso', NULL);
+
 --
 -- Índices para tablas volcadas
 --
@@ -229,7 +230,7 @@ ALTER TABLE `areas`
 ALTER TABLE `area_almacen`
   ADD PRIMARY KEY (`id_area_almacen`),
   ADD KEY `fk_AREA_ALMACEN_ALMACENES1_idx` (`id_almacen`),
-  ADD KEY `fk_AREA_ALMACEN_AREAS1_idx` (`id_area`);
+  ADD KEY `fk_AREA_ALMACEN_AREAS1_idx` (`id_areas`);
 
 --
 -- Indices de la tabla `bitacora_usuarios`
@@ -251,8 +252,8 @@ ALTER TABLE `campos_tipo_producto`
 --
 ALTER TABLE `erareas`
   ADD PRIMARY KEY (`id_area`),
-  ADD KEY `fk_ERAREAS_AREAS1_idx` (`id_area_entrega`),
-  ADD KEY `fk_ERAREAS_AREAS2_idx` (`id_area_recepcion`);
+  ADD KEY `fk_ERAREAS_AREAS1_idx` (`id_areas_entrega`),
+  ADD KEY `fk_ERAREAS_AREAS2_idx` (`id_areas_recepcion`);
 
 --
 -- Indices de la tabla `privilegios_area`
@@ -265,7 +266,7 @@ ALTER TABLE `privilegios_area`
 --
 ALTER TABLE `privilegios_sistema`
   ADD PRIMARY KEY (`id_privilegios_sistema`),
-  ADD KEY `fk_PRIVILEGIOS_SISTEMA_AREAS1_idx` (`id_area`),
+  ADD KEY `fk_PRIVILEGIOS_SISTEMA_AREAS1_idx` (`id_areas`),
   ADD KEY `fk_PRIVILEGIOS_SISTEMA_PRIVILEGIOS_AREA1_idx` (`id_privilegio_area`),
   ADD KEY `fk_PRIVILEGIOS_SISTEMA_USUARIOS1_idx` (`id_usuario`);
 
@@ -308,7 +309,7 @@ ALTER TABLE `almacenes`
 -- AUTO_INCREMENT de la tabla `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id_areas` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id_areas` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `area_almacen`
 --
@@ -358,7 +359,7 @@ ALTER TABLE `tipo_productos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuarios` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id_usuarios` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- Restricciones para tablas volcadas
 --
@@ -379,14 +380,14 @@ ALTER TABLE `bitacora_usuarios`
 -- Filtros para la tabla `erareas`
 --
 ALTER TABLE `erareas`
-  ADD CONSTRAINT `fk_ERAREAS_AREAS1` FOREIGN KEY (`id_area_entrega`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_ERAREAS_AREAS2` FOREIGN KEY (`id_area_recepcion`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_ERAREAS_AREAS1` FOREIGN KEY (`id_areas_entrega`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_ERAREAS_AREAS2` FOREIGN KEY (`id_areas_recepcion`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `privilegios_sistema`
 --
 ALTER TABLE `privilegios_sistema`
-  ADD CONSTRAINT `fk_PRIVILEGIOS_SISTEMA_AREAS1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_PRIVILEGIOS_SISTEMA_AREAS1` FOREIGN KEY (`id_areas`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_PRIVILEGIOS_SISTEMA_PRIVILEGIOS_AREA1` FOREIGN KEY (`id_privilegio_area`) REFERENCES `privilegios_area` (`id_privilegios_area`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
