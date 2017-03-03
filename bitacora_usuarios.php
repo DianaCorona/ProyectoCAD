@@ -4,41 +4,12 @@
     $consultas = new DBClass();
     
     //Varibles Globales del Archivo (pueden ser omitidas, optimizadas para catálogos solo cambiar nombre de tabla y el ID de la misma.
-    $tablabase="tipo_productos";
-    $idbase="id_tipo_productos";
+    $tablabase="bitacora_usuarios";
+    $idbase="id_bitacora_usuarios";
     
     //Variables Globales del Archivo (pueden ser omitidas) texto desplegado en los formularios de catálogos
-    $textoencabezado="Tipos de productos";
-    $textoencabezadoforms="Tipo de producto";
-    
-    //Procesamiento del POST para guardar información 
-    if(isset($_POST['save'])){
-        //obtención de variables POST y guardado en forma de Array $data
-        //$data['id_tipo_productos'] = $_POST['id_tipo_productos'];
-        $data['nombre_tipo_producto'] = $_POST['nombre_tipo_producto'];
-        
-        //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
-        echo $consultas->to_insert($tablabase, $data);
-        die();
-    }
-    
-    //Procesamiento del POST para eliminar información 
-    if(isset($_POST['delete'])){
-        //ejecución de "Delete" en la BD en la tabla declarada en la variable global $tablabase y el $idbase junto al POST recibido con ID a eliminar
-        echo $consultas->to_delete($tablabase,$idbase."='".$_POST['delete']."' ");
-        die();
-    }
-    
-    //Procesamiento del POST para actualizar información 
-    if(isset($_POST['update'])){
-        //obtención de variables POST y guardado en forma de Array $data
-        //$data['id_status'] = $_POST['id_status'];
-        $data['nombre_tipo_producto'] = $_POST['nombre_tipo_producto'];
-        
-        //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data 
-        echo $consultas->to_update($tablabase, $data, $idbase."='".$_POST['update']."'");
-        die();
-    }
+    $textoencabezado="Bitacora de usuarios";
+    $textoencabezadoforms="Bitacora de usuarios";
     
     //Función de procesamiento para obtener información de una tabla por transacción AJAX return JSON con la información de la misma.
     if(isset($_POST['obtener_info'])){
@@ -133,7 +104,7 @@
         <script>
             $(document).ready(function(){
                 //Página a la que se realizarán las peticiones AJAX y solicitudes de información
-                var paginaact="tipo_productos.php";
+                var paginaact="bitacora_usuarios.php";
                 
                 //Configuración de la tabla DataTables para muestreo de información                              
                 var table = $('#informacion').dataTable( {  
@@ -178,7 +149,7 @@
                     } 
                      
                     //var id_status= $('#id_status').val();
-                    var nombreproducto= $('#nombreproducto').val();
+                    var descripcion= $('#descripcion').val();
                                    
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formagregar');
@@ -189,7 +160,7 @@
                     var formData = new FormData();
                     formData.append('save','true');
                     //formData.append('id_status',nombre);
-                    formData.append('nombre_tipo_producto', nombreproducto);
+                    formData.append('descripcion', descripcion);
                     
                     senddata(formData);
                 });
@@ -230,7 +201,7 @@
                 
                     e.preventDefault();  
                     var id = $(this).attr('id-accion'); 
-                    var nombreproducto = ""; 
+                    var descripcion = ""; 
                            
                     var infoData = new FormData();
                     infoData.append('obtener_info',"<?php echo $tablabase ?>");
@@ -239,11 +210,11 @@
                     
                     jQuery.each(obtener_info(infoData), function(){ 
                         //id_status= this.id_status;
-                        nombre_tipo_producto= this.nombreproducto;
+                        descripcion= this.descripcion;
                     });
                            
                     $('#ids').val(id);
-                    $('#nombreproductos').val(nombreproducto);                      
+                    $('#descripcions').val(descripcion);                      
                     
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formmodificar');
@@ -262,8 +233,7 @@
                     } 
                     
                     var id= $('#ids').val();
-                    
-                    var nombreproducto= $('#nombreproductos').val();
+                    var descripcion= $('#descripcions').val();
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formmodificar');
                         var modalObj = new Modal( modalElement );
@@ -272,7 +242,7 @@
                     
                     var formData = new FormData();
                     formData.append('update',id);
-                     formData.append('nombre_tipo_producto',nombreproducto);
+                     formData.append('descripcion',descripcion);
                     
                     senddata(formData);
                 });
@@ -325,7 +295,7 @@
                     
                     $(form+' input.required').each(function(){   
                         $(this).removeClass('errorstyle');
-                        if($(this).val()=="" && $(this).attr('id_tipo_productos')){
+                        if($(this).val()=="" && $(this).attr('id_status')){
                             $(this).addClass('errorstyle');  
                             $(this).attr('placeholder','Campo Requerido'); 
                             valid=false;
@@ -334,7 +304,7 @@
                     
                     $(form+' select.required').each(function(){   
                         $(this).removeClass('errorstyle');
-                        if($(this).val()=="" && $(this).attr('id_tipo_productos')){
+                        if($(this).val()=="" && $(this).attr('id_status')){
                             $(this).addClass('errorstyle');  
                             valid=false;
                         }                        
@@ -406,34 +376,33 @@
                             <thead>
                                 <tr class="nohov">   
                                     <th>Id</th> 
-                                    <th>Descripcion</th>
-                                    <th>Acciones</th>
+                                    <th>Usuario</th>
+                                    <th>Status</th>
+                                    <th>Fecha de modificacion</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                    $data=$consultas->obtener_datos("tipo_productos");
+                                    $data=$consultas->obtener_datos("bitacora_usuarios");
                                     while ($row = mysql_fetch_array($data)){
                                         echo '<tr>
-                                            <td>'.$row['id_tipo_productos'].'</td>
-                                            <td>'.$row['nombre_tipo_producto'].'</td>
-                                          
-                                            <td style="width:50px; min-width:50px; text-align:right;">
-                                                <a id-accion="'.$row[$idbase].'" class="modificar"><span class="fa fa-pencil-square-o" title="Modificar"></span></a> 
-                                                <a id-accion="'.$row[$idbase].'" class="eliminar"><span class="fa fa-trash-o" title="Eliminar"></span></a>
-                                            </td>
+                                            <td>'.$row['id_bitacora_usuarios'].'</td>
+                                            <td>';
+                                                $nom=$consultas->obtener_por_id("usuarios", $row['id_usuarios'],"nombre");
+                                                $ap=$consultas->obtener_por_id("usuarios", $row['id_usuarios'],"appaterno");
+                                                $am=$consultas->obtener_por_id("usuarios", $row['id_usuarios'],"apmaterno");
+                                                echo $nom." ".$ap." ".$am;
+                                            echo '</td>
+                                            <td>';
+                                                $descStat=$consultas->obtener_por_id("status", $row['id_status'],"descripcion");
+                                                echo $descStat;
+                                            echo '</td>
+                                            <td>'.$row['fecha_modificacion'].'</td>                                          
                                         </tr>';
                                     }
                                 ?>                            
                             </tbody>
                         </table>
-                    </div>
-
-                    <!--Desplegar botones de acción en caso de ser necesarios.-->
-                    <div class="all-100">
-                        <button id="agregar" class="ink-button red">Agregar</button>
-                        <!--<button id="xlsx" class="ink-button red ">XLSX</button>-->
-    <!--                    <button id="deltable" class="ink-button red ">Borrar Contenido</button>-->
                     </div>
                 </div>
                 <!--FIN Div con el contenido a mostrar al cosa (tablas, información, formularios estaticos etc.-->
@@ -450,84 +419,6 @@
                 </div>
 
                 <div class="push"></div>
-
-                <!--Elemento emergente (Formulario en ventana modal para guardar información configurado por el cosa)-->
-                <div id="divFormagregar" >
-                    <div class="ink-shade fade">
-                        <div id="Formagregar" class="ink-modal" data-trigger="#agregar" data-width="500px" data-height="560px">
-                            <div class="modal-body">
-                                <form id="FormAgrega" class="ink-form all-100 content-center" action="" method="post">
-                                    <h5>Agregar <?php echo $textoencabezadoforms; ?></h5>
-                                    <!--Formato del bloque por campo.... 
-                                    <div
-                                        <label
-                                        <div
-                                            <input
-                                        </div>
-                                    </div>
-                                    -->
-                                
-                                    <!--FIN Formato del bloque por campo....-->
-
-                                    <div class="control-group gutters">     
-                                        <label for="nombreproducto" class="all-40">Nombre del tipo de productos</label>
-                                        <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="nombreproducto"/>
-                                        </div>
-                                    </div>   
-                        
-                                </form>                        
-                            </div>
-                            <div class="modal-footer">
-                                <button id="save" class="ink-button red">Agregar</button>
-                                <button class="ink-button red ink-dismiss">Cancelar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!--FIN Form Agregar-->
-
-                <!--Elemento emergente (Formulario en ventana modal para modificar información configurado por el cosa)-->
-                <div id="divFormmodificar" >
-                    <div class="ink-shade fade">
-                        <div id="Formmodificar" class="ink-modal" data-trigger="#modificar" data-width="500px" data-height="560px">
-                            <div class="modal-body">
-                                <form id="FormModifica" class="ink-form all-100 content-center" action="" method="post">
-                                    <h5>Modificar <?php echo $textoencabezadoforms; ?></h5>
-                                   
-                                     <div class="control-group gutters">     
-                                        <label for="nombreproductos" class="all-40">Nombre del tipo de productos</label>
-                                        <div class="all-60">
-                                            <input  class="all-100 required" type="text" id="nombreproductos"/>
-                                        </div>
-                                    </div>                           
-                                    
-                                    <input type="hidden" id="ids" name="ids" value=""/>
-                                </form>                        
-                            </div>
-                            <div class="modal-footer">
-                                <button id="modif" class="ink-button red">Guardar</button>
-                                <button class="ink-button red ink-dismiss">Cancelar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!--FIN Form Modificar-->
-
-                <!--Elemento emergente (Formulario en ventana modal para eliminar información configurado por el cosa)-->
-                <div id="divFormeliminar" >
-                    <div class="ink-shade fade">
-                        <div id="Formeliminar" class="ink-modal" data-trigger="#Eliminartransfer" data-width="360px" data-height="170px">
-                            <div class="modal-body">
-                                <h4 id="etiquetadel" style="margin-bottom:0px;">¿Deseas Eliminar el Registro?</h4>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="ink-button red" id="delete" id-eliminar="">Eliminar</button>
-                                <button class="ink-button red ink-dismiss">Cancelar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!--FIN Form Eliminar-->
-
-                <!--FIN Elementos a mostrar dinamicos (formularios en ventanas modal, advertencias, estados de carga, etc.)-->
 
             </div>
         </div><!--FIN Contenido-->

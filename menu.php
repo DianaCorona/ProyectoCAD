@@ -21,18 +21,25 @@
             <?php if($_SESSION['privilegiosrm']==1){ ?>
                 <li class="condensed-300">
                     <a href="#">Catálogos</a>
-                    <ul class="submenu">
-                        <li class="condensed-300"><a href="usuarios.php">Usuarios</a></li>
-                        <li class="condensed-300"><a href="status.php">Status</a></li>
+                    <ul class="submenu">                        
                         <li class="condensed-300"><a href="areas.php">Areas</a></li>
                         <li class="condensed-300"><a href="erareas.php">Entrada y Recepción Area</a></li>
                         <li class="condensed-300"><a href="tipo_productos.php">Tipo Productos</a></li>
                     </ul>
                 </li>
                 <li class="condensed-300">
+                    <a href="#">Usuarios</a>
+                    <ul class="submenu">
+                        <li class="condensed-300"><a href="usuarios.php">Usuarios</a></li>
+                        <li class="condensed-300"><a href="status.php">Status</a></li>
+                        <li class="condensed-300"><a href="bitacora_usuarios.php">Bitacora</a></li>
+                    </ul>                    
+                </li>
+                <li class="condensed-300">
                     <a href="#">Almacen</a>
                     <ul class="submenu">
                         <li class="condensed-300"><a href="productos.php">Productos</a></li>
+                        <li class="condensed-300"><a href="almacen.php">Almacen</a></li>
                     </ul>
                 </li>
             <?php } ?>
@@ -65,8 +72,23 @@
                 <li class="condensed-300">
                     <a href="#">Catálogos</a>
                     <ul class="submenu">
+                          <li class="condensed-300"><a href="areas.php">Areas</a></li>
+                        <li class="condensed-300"><a href="tipo_productos.php">Tipo Productos</a></li>
+                    </ul>
+                </li>
+
+                <li class="condensed-300">
+                    <a href="#">Usuarios</a>
+                    <ul class="submenu">
                         <li class="condensed-300"><a href="usuarios.php">Usuarios</a></li>
-                        <li class="condensed-300"><a href="#">Cosas</a></li>
+                        <li class="condensed-300"><a href="status.php">Status</a></li>
+                    </ul>                    
+                </li>
+                <li class="condensed-300">
+                    <a href="#">Almacen</a>
+                    <ul class="submenu">
+                        <li class="condensed-300"><a href="productos.php">Productos</a></li>
+                        <li class="condensed-300"><a href="almacen.php">Almacen</a></li>
                     </ul>
                 </li>
             <?php } ?>

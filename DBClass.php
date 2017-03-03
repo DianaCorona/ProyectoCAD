@@ -28,6 +28,7 @@
             session_start();
             if (isset($record['id_usuarios']) && $record['id_usuarios'] !== "" )
             {
+
                 $_SESSION['idusuariorm'] = $record['id_usuarios'];
                 $_SESSION['privilegiosrm'] = $record['id_privilegios'];
                 $_SESSION['usuariorm'] = $record['usuario'];
@@ -49,6 +50,7 @@
         public function destruirSesion()
         {
             $_SESSION['idusuariorm'] = 0;
+
             $_SESSION['privilegiosrm'] = "No Autorizado";
             $_SESSION['usuariorm'] = "No Definido";
             $_SESSION['autorizacionrm'] = false;
@@ -108,7 +110,28 @@
             }else{
                 return 'Error al obtener la información';
             }
+
         }
+        //select id de ultimo registro  from tabla
+        public function obtener_ultimo_dato($tabla){
+            if($select = $this->link->query("select * from ".$tabla." order by 1 desc limit 1;")){
+                $row =mysql_fetch_array($select);
+                return $row[0];
+            }else{
+                return 'Error al obtener la información';
+            }
+        }
+        //select columna de usuario segun id
+        public function obtener_por_id($tabla, $id, $col){
+            if($select = $this->link->query("select ".$col." from ".$tabla." where id_".$tabla."=".$id.";")){
+                $row =mysql_fetch_array($select);
+                return $row[$col];
+
+            }else{
+                return 'Error al obtener la información';
+            }
+        }
+
 
         //select from tabla * condicionado //
         public function obtener_datos_condicion_a($tabla,$where){
@@ -299,8 +322,9 @@
         //select condicionado (adaptar a necesidad) //
         public function obtener_datos_multiples($tabla){
             if($tabla==="usuarios"){
-                if($select = $this->link->query("select usuarios.idusuario, usuarios.usuario, usuarios.privilegios, usuarios.idcentrocosto, centrocosto.idcentrocosto, centrocosto.nombre, tipo_centro_costo.idtipocentro, tipo_centro_costo.nombretipocentrocosto
-                        from usuarios join centrocosto on usuarios.idcentrocosto = centrocosto.idcentrocosto
+
+                if($select = $this->link->query("select usuarios.id_usuarios, usuarios.usuario, usuarios.privilegios, usuarios.idcentrocosto, centrocosto.idcentrocosto, centrocosto.nombre, tipo_centro_costo.idtipocentro, tipo_centro_costo.nombretipocentrocosto
+
                         join tipo_centro_costo on centrocosto.idtipocentro = tipo_centro_costo.idtipocentro;" )){
                     return $select;
                 }else{
