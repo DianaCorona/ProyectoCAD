@@ -52,7 +52,8 @@ CREATE TABLE `areas` (
 --
 
 INSERT INTO `areas` (`id_areas`, `nombre_area`, `descripcion`, `fecha_alta`, `id_responsable`) VALUES
-(1, 'sdfsd', 'sdfsdf', '2017-02-04', 0);
+(1, 'administrativa', NULL, NULL, 0),
+(2, 'finanzas', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -188,7 +189,7 @@ CREATE TABLE `usuarios` (
   `apmaterno` varchar(45) DEFAULT NULL,
   `fecha_alta` date DEFAULT NULL,
   `id_status` int(11) DEFAULT NULL,
-  `id_area` int(11) DEFAULT NULL,
+  `id_areas` int(11) DEFAULT NULL,
   `privilegios` int(11) DEFAULT NULL,
   `id_privilegios` int(11) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
@@ -199,8 +200,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuarios`, `usuario`, `appaterno`, `apmaterno`, `fecha_alta`, `id_status`, `id_area`, `id_privilegios`, `password`, `nombre`) VALUES
-(1, 'admin', 'admin', 'asdfghj', '2017-02-04', NULL, NULL, 1, '21232f297a57a5a743894a0e4a801fc3', 'admin');
-
+(1, 'admin', 'admin', 'asdfghj', '2017-02-04', 1, 1, 1, 1, 'fd6438b18f84875b61d905b64d1742ab', 'admin'),
+(2, 'Diana', 'Corona', 'García', '2017-02-04', 2, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Diana'),
+(10, 'Pats', '', '', '2017-03-02', 3, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Pats'),
+(11, 'Corona', 'Corona', 'Corona', '2017-03-02', 1, 2, 1, NULL, '5102b6478a52b43ec33b46e031e63c8f', 'Corona'),
+(13, 'status', 'status', 'status', '2017-03-02', 1, 1, 2, NULL, '9acb44549b41563697bb490144ec6258', 'status');
 --
 -- Índices para tablas volcadas
 --
@@ -288,7 +292,7 @@ ALTER TABLE `tipo_productos`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuarios`),
-  ADD KEY `fk_USUARIOS_AREAS1_idx` (`id_area`),
+  ADD KEY `fk_USUARIOS_AREAS1_idx` (`id_areas`),
   ADD KEY `fk_USUARIOS_STATUS_idx` (`id_status`);
 
 --
@@ -389,7 +393,7 @@ ALTER TABLE `privilegios_sistema`
 -- Filtros para la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD CONSTRAINT `fk_USUARIOS_AREAS1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_USUARIOS_AREAS1` FOREIGN KEY (`id_areas`) REFERENCES `areas` (`id_areas`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
