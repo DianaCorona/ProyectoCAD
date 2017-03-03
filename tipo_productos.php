@@ -14,7 +14,7 @@
     //Procesamiento del POST para guardar información 
     if(isset($_POST['save'])){
         //obtención de variables POST y guardado en forma de Array $data
-        $data['id_tipo_productos'] = $_POST['id_tipo_productos'];
+        //$data['id_tipo_productos'] = $_POST['id_tipo_productos'];
         $data['nombre_tipo_producto'] = $_POST['nombre_tipo_producto'];
         
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
