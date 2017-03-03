@@ -199,7 +199,7 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuarios`, `usuario`, `appaterno`, `apmaterno`, `fecha_alta`, `id_status`, `id_area`, `id_privilegios`, `password`, `nombre`) VALUES
+INSERT INTO `usuarios` (`id_usuarios`, `usuario`, `appaterno`, `apmaterno`, `fecha_alta`, `id_status`, `id_areas`, `privilegios`, `id_privilegios`, `password`, `nombre`) VALUES
 (1, 'admin', 'admin', 'asdfghj', '2017-02-04', 1, 1, 1, 1, 'fd6438b18f84875b61d905b64d1742ab', 'admin'),
 (2, 'Diana', 'Corona', 'García', '2017-02-04', 2, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Diana'),
 (10, 'Pats', '', '', '2017-03-02', 3, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Pats'),
