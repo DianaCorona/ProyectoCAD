@@ -200,11 +200,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuarios`, `usuario`, `appaterno`, `apmaterno`, `fecha_alta`, `id_status`, `id_areas`, `privilegios`, `id_privilegios`, `password`, `nombre`) VALUES
-(1, 'admin', 'admin', 'asdfghj', '2017-02-04', 1, 1, 1, 1, 'fd6438b18f84875b61d905b64d1742ab', 'admin'),
+(1, 'admin', 'admin', 'asdfghj', '2017-02-04', 1, 1, 1, 1, '21232f297a57a5a743894a0e4a801fc3', 'admin'),
 (2, 'Diana', 'Corona', 'García', '2017-02-04', 2, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Diana'),
 (10, 'Pats', '', '', '2017-03-02', 3, 2, 1, NULL, 'fd6438b18f84875b61d905b64d1742ab', 'Pats'),
 (11, 'Corona', 'Corona', 'Corona', '2017-03-02', 1, 2, 1, NULL, '5102b6478a52b43ec33b46e031e63c8f', 'Corona'),
-(13, 'status', 'status', 'status', '2017-03-02', 1, 1, 2, NULL, '9acb44549b41563697bb490144ec6258', 'status');
+(13, 'status', 'status', 'status', '2017-03-02', 1, 1, 1, NULL, '9acb44549b41563697bb490144ec6258', 'status');
 --
 -- Índices para tablas volcadas
 --
