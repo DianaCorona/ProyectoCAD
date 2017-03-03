@@ -26,9 +26,9 @@
             
             $record = mysql_fetch_array($rows);
             session_start();
-            if (isset($record['idusuario']) && $record['idusuario'] !== "" )
+            if (isset($record['id_usuarios']) && $record['id_usuarios'] !== "" )
             {
-                $_SESSION['idusuariorm'] = $record['idusuario'];                
+                $_SESSION['id_usuariorm'] = $record['id_usuarios'];                
                 $_SESSION['privilegiosrm'] = $record['privilegios'];
                 $_SESSION['usuariorm'] = $record['usuario'];
                 $_SESSION['nombreusuariorm'] = $record['nombre'];
@@ -48,7 +48,7 @@
         //destruir la informacion de todas la variables declaradas en la parte superior
         public function destruirSesion()
         {
-            $_SESSION['idusuariorm'] = 0;            
+            $_SESSION['id_usuariorm'] = 0;            
             $_SESSION['privilegiosrm'] = "No Autorizado";
             $_SESSION['usuariorm'] = "No Definido";
             $_SESSION['autorizacionrm'] = false;           
@@ -152,7 +152,7 @@
         //select condicionado (adaptar a necesidad) //                
         public function obtener_datos_multiples($tabla){   
             if($tabla==="usuarios"){
-                if($select = $this->link->query("select usuarios.idusuario, usuarios.usuario, usuarios.privilegios, usuarios.idcentrocosto, centrocosto.idcentrocosto, centrocosto.nombre, tipo_centro_costo.idtipocentro, tipo_centro_costo.nombretipocentrocosto
+                if($select = $this->link->query("select usuarios.id_usuarios, usuarios.usuario, usuarios.privilegios, usuarios.idcentrocosto, centrocosto.idcentrocosto, centrocosto.nombre, tipo_centro_costo.idtipocentro, tipo_centro_costo.nombretipocentrocosto
                         from usuarios join centrocosto on usuarios.idcentrocosto = centrocosto.idcentrocosto 
                         join tipo_centro_costo on centrocosto.idtipocentro = tipo_centro_costo.idtipocentro;" )){
                     return $select;

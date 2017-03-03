@@ -5,7 +5,7 @@
 
     //Varibles Globales del Archivo (pueden ser omitidas, optimizadas para catálogos solo cambiar nombre de tabla y el ID de la misma.
     $tablabase="usuarios";
-    $idbase="idusuario";
+    $idbase="id_usuarios";
 
     //Variables Globales del Archivo (pueden ser omitidas) texto desplegado en los formularios de catálogos
     $textoencabezado="Usuarios";
@@ -21,7 +21,9 @@
         $data['appaterno'] = $_POST['appaterno'];
         $data['apmaterno'] = $_POST['apmaterno'];
 
-        $data['fecha_alta'] = $_POST['fecha_alta'];
+        $data['fecha_alta'] = $_POST['fecha_alta'];       
+        $data['id_areas'] = $_POST['id_areas'];
+        $data['id_status'] = $_POST['id_status'];
 
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_insert($tablabase, $data);
@@ -43,6 +45,10 @@
         $data['nombre'] = $_POST['nombreusr'];
         $data['appaterno'] = $_POST['appaterno'];
         $data['apmaterno'] = $_POST['apmaterno'];
+
+        $data['id_areas'] = $_POST['id_areas'];
+        $data['id_status'] = $_POST['id_status'];
+        
 
         if($_POST['password']!==""){
             $data['password'] = md5(trim($_POST['password']));
@@ -130,7 +136,7 @@
 
         <!--Plugin JS de INK y JQUERY (Esqueleto del funcionamiento de los sistemas)!-->
         <script src="js/jquery-3.1.1.js" type="text/javascript"></script>
-	<script type="text/javascript" src="js/holder.js"></script>
+	    <script type="text/javascript" src="js/holder.js"></script>
         <script type="text/javascript" src="js/ink.min.js"></script>
         <script type="text/javascript" src="js/ink-ui.min.js"></script>
         <script type="text/javascript" src="js/ink-all.min.js"></script>
@@ -191,7 +197,8 @@
                     }
 
                     var d = new Date();
-                    var Fecha=d.getFullYear() + "-"+d.getMonth()+"-"+d.getDay();
+                    var Fecha=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+                    //var Fecha = string.concat;
 
                     var nombre= $('#nombre').val();
                     var password= $('#password').val();
@@ -199,6 +206,8 @@
                     var appaterno= $('#appaterno').val();
                     var apmaterno= $('#apmaterno').val();
                     var privilegios= $('#privilegios').val();
+                    var id_areas= $('#id_areas').val();
+                    var id_status= $('#id_status').val();
                     var fecha_alta= Fecha;
 
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
@@ -215,6 +224,9 @@
                     formData.append('appaterno',appaterno);
                     formData.append('apmaterno',apmaterno);
                     formData.append('privilegios',privilegios);
+                    formData.append('id_areas',id_areas);
+                    formData.append('id_status',id_status);
+
 
                     formData.append('fecha_alta',fecha_alta);
 
@@ -261,6 +273,10 @@
                     var nombre = "";
                     var appaterno = "";
                     var apmaterno = "";
+                    var apmaterno = "";
+                    var id_areas = "";
+                    var id_status = "";
+
 
                     var infoData = new FormData();
                     infoData.append('obtener_info',"usuarios");
@@ -272,6 +288,8 @@
                         nombre= this.nombre;
                         appaterno= this.appaterno;
                         apmaterno= this.apmaterno;
+                        id_areas=this.id_areas;
+                        id_status=this.id_status;
                     });
 
                     $('#idm').val(id);
@@ -280,6 +298,8 @@
                     $('#appaternom').val(appaterno);
                     $('#apmaternom').val(apmaterno);
                     $('#privilegiosm').val(privilegios);
+                    $('#id_areasm').val(id_areas);
+                    $('#id_statusm').val(id_status);
 
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formmodificar');
@@ -290,6 +310,7 @@
 
                 //Modificar Registro
                 $('#modif').click(function(e){
+                    debugger;
                     e.preventDefault();
 
                     if(!valida("#FormModifica")){
@@ -302,6 +323,8 @@
                     var appaterno= $('#appaternom').val();
                     var apmaterno= $('#apmaternom').val();
                     var privilegios= $('#privilegiosm').val();
+                    var id_areas= $('#id_areasm').val();
+                    var id_status= $('#id_statusm').val();
                     var password= $('#passwordm').val();
 
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
@@ -318,6 +341,8 @@
                     formData.append('apmaterno',apmaterno);
                     formData.append('privilegios',privilegios);
                     formData.append('password',password);
+                    formData.append('id_areas',id_areas);
+                    formData.append('id_status',id_status);
                     senddata(formData);
                 });
 
@@ -454,13 +479,18 @@
                                     <th>Apellido Paterno</th>
                                     <th>Apellido Materno</th>
                                     <th>Privilegios</th>
+                                    <th>Area</th>
+                                    <th>Status</th>
                                     <th>Fecha de alta</th>
+
+
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                    $data=$consultas->obtener_datos("usuarios");
+                                    $data=$consultas->obtener_datos("usuarios");                          
+                                    
                                     while ($row = mysql_fetch_array($data)){
                                         echo '<tr>
                                             <td>'.$row['usuario'].'</td>
@@ -473,6 +503,25 @@
                                                     echo 'Administrador';
                                                 }else if($row['privilegios']==2){
                                                     echo 'Otros';
+                                                }
+                                                echo '</td>                                   
+
+                                            <td>';
+                                                $area=$consultas->obtener_datos("areas");
+                                                while ($ar= mysql_fetch_array($area)) {                                                    
+                                                    if($ar['id_areas']==$row['id_areas']){
+                                                        echo $ar['nombre_area'];
+                                                    }
+                                                }
+
+                                            echo '</td>
+
+                                            <td>';
+                                                $status=$consultas->obtener_datos("status");
+                                                while ($stat = mysql_fetch_array($status)){
+                                                    if($stat['id_status']==$row['id_status']){
+                                                        echo $stat['descripcion'];
+                                                    }
                                                 }
                                             echo '</td>
                                             <td>'.$row['fecha_alta'].'</td>
@@ -567,6 +616,33 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="control-group gutters">
+                                        <label for="id_areas" class="all-40">Area</label>
+                                        <div class="all-60">
+                                            <select  class="all-100 required " data-placeholder="Seleccione area..."  id="id_areas"/>
+                                                <option value="">Seleccione...</option> 
+                                                <?php 
+                                                    $area=$consultas->obtener_datos("areas");
+                                                    while ($ar= mysql_fetch_array($area)) { ?>
+                                                        <option value="<?php echo $ar['id_areas'];?>"> <?php $ar['nombre_area']; ?> </option> 
+                                                <?php }?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group gutters">
+                                        <label for="id_status" class="all-40">Status</label>
+                                        <div class="all-60">
+                                            <select  class="all-100 required " data-placeholder="Seleccione status..."  id="id_status"/>
+                                                <option value="">Seleccione...</option> 
+                                                <?php 
+                                                    $Status=$consultas->obtener_datos("status");
+                                                    while ($stat= mysql_fetch_array($Status)) { ?>
+                                                        <option value="<?php echo $stat['id_status'];?>"> <?php echo $stat['descripcion']; ?> </option> 
+                                                <?php }?>
+
+                                            </select>
+                                        </div>
+                                    </div>
 
                                 </form>
                             </div>
@@ -622,6 +698,33 @@
                                                 <option value="">Seleccione...</option>
                                                 <option value="1">Administrador</option>
                                                 <option value="2">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group gutters">
+                                        <label for="id_areasm" class="all-40">Area</label>
+                                        <div class="all-60">
+                                            <select  class="all-100 required " data-placeholder="Seleccione area..."  id="id_areasm"/>
+                                                <option value="">Seleccione...</option> 
+                                                <?php 
+                                                    $area=$consultas->obtener_datos("areas");
+                                                    while ($ar= mysql_fetch_array($area)) { ?>
+                                                        <option value="<?php echo $ar['id_areas'];?>"> <?php echo $ar['nombre_area']; ?> </option> 
+                                                <?php }?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group gutters">
+                                        <label for="id_statusm" class="all-40">Status</label>
+                                        <div class="all-60">
+                                            <select  class="all-100 required " data-placeholder="Seleccione status..."  id="id_statusm"/>
+                                                <option value="">Seleccione...</option> 
+                                                <?php 
+                                                    $status=$consultas->obtener_datos("status");
+                                                    while ($stat= mysql_fetch_array($status)) { ?>
+                                                        <option value="<?php echo $stat['id_status'];?>"> <?php echo $stat['descripcion']; ?> </option> 
+                                                <?php }?>
+
                                             </select>
                                         </div>
                                     </div>
