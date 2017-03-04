@@ -16,22 +16,17 @@
         //obtención de variables POST y guardado en forma de Array $data
         $data['usuario'] = $_POST['nombre'];
         $data['password'] = md5(trim($_POST['password']));
-        $data['id_privilegios'] = $_POST['privilegios'];
+        $data['privilegios'] = $_POST['privilegios'];
         $data['nombre'] = $_POST['nombreusr'];
         $data['appaterno'] = $_POST['appaterno'];
         $data['apmaterno'] = $_POST['apmaterno'];
 
-<<<<<<< HEAD
-        $data['fecha_alta'] = $_POST['fecha_alta'];
-
-=======
         $data['fecha_alta'] = $_POST['fecha_alta'];       
         $data['id_areas'] = $_POST['id_areas'];
         $data['id_status'] = $_POST['id_status'];
 
 
         
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_insert($tablabase, $data);
 
@@ -56,7 +51,7 @@
     if(isset($_POST['update'])){
         //obtención de variables POST y guardado en forma de Array $data
         $data['usuario'] = $_POST['nombre'];
-        $data['id_privilegios'] = $_POST['privilegios'];
+        $data['privilegios'] = $_POST['privilegios'];
         $data['nombre'] = $_POST['nombreusr'];
         $data['appaterno'] = $_POST['appaterno'];
         $data['apmaterno'] = $_POST['apmaterno'];
@@ -69,8 +64,6 @@
             $data['password'] = md5(trim($_POST['password']));
         }
 
-<<<<<<< HEAD
-=======
         $antes = $consultas->obtener_por_id("usuarios", $_POST['update'],"id_status");
         if ($data['id_status'] != $antes) {
             $bita['fecha_modificacion'] = $_POST['fecha_modificacion'];
@@ -78,7 +71,6 @@
             $bita['id_usuarios'] = $_POST['update']; 
             echo $consultas->to_insert('bitacora_usuarios', $bita);
         }
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
         //Guardado de información en la tabla declarada en la variable global $tablabase y la información en forma de Array $data
         echo $consultas->to_update($tablabase, $data, $idbase."='".$_POST['update']."'");
 
@@ -148,8 +140,8 @@
         <link rel="stylesheet" type="text/css" href="css/ink-flex.min.css">
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 
-		<!-- <link rel="stylesheet" type="text/css" href="css/style2.css"> -->
-		<!--<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>-->
+        <!-- <link rel="stylesheet" type="text/css" href="css/style2.css"> -->
+        <!--<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>-->
         <!--[if IE 7 ]>
             <link rel="stylesheet" href="../css/ink-ie7.css" type="text/css" media="screen" title="no title" charset="utf-8">
         <![endif]-->
@@ -162,7 +154,7 @@
 
         <!--Plugin JS de INK y JQUERY (Esqueleto del funcionamiento de los sistemas)!-->
         <script src="js/jquery-3.1.1.js" type="text/javascript"></script>
-	    <script type="text/javascript" src="js/holder.js"></script>
+        <script type="text/javascript" src="js/holder.js"></script>
         <script type="text/javascript" src="js/ink.min.js"></script>
         <script type="text/javascript" src="js/ink-ui.min.js"></script>
         <script type="text/javascript" src="js/ink-all.min.js"></script>
@@ -223,12 +215,8 @@
                     }
 
                     var d = new Date();
-<<<<<<< HEAD
-                    var Fecha=d.getFullYear() + "-"+d.getMonth()+"-"+d.getDay();
-=======
                     var Fecha=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
                     //var Fecha = string.concat;
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
 
                     var nombre= $('#nombre').val();
                     var password= $('#password').val();
@@ -303,12 +291,9 @@
                     var nombre = "";
                     var appaterno = "";
                     var apmaterno = "";
-<<<<<<< HEAD
-=======
                     var apmaterno = "";
                     var id_areas = "";
                     var id_status = "";
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
 
                     var infoData = new FormData();
                     infoData.append('obtener_info',"usuarios");
@@ -330,11 +315,8 @@
                     $('#appaternom').val(appaterno);
                     $('#apmaternom').val(apmaterno);
                     $('#privilegiosm').val(privilegios);
-<<<<<<< HEAD
-=======
                     $('#id_areasm').val(id_areas);
                     $('#id_statusm').val(id_status);
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
 
                     Ink.requireModules( ['Ink.Dom.Selector_1','Ink.UI.Modal_1'], function( Selector, Modal ){
                         var modalElement = Ink.s('#Formmodificar');
@@ -345,21 +327,15 @@
 
                 //Modificar Registro
                 $('#modif').click(function(e){
-<<<<<<< HEAD
-=======
                     debugger;
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
                     e.preventDefault();
 
                     if(!valida("#FormModifica")){
                         return;
                     }
-<<<<<<< HEAD
-=======
                     var d = new Date();
                     var Fecha=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
                     var fecha_modificacion= Fecha;
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
 
                     var id= $('#idm').val();
                     var usuario= $('#nombrem').val();
@@ -377,10 +353,7 @@
                         modalObj.dismiss();
                     });
 
-<<<<<<< HEAD
-=======
 
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
                     var formData = new FormData();
                     formData.append('update',id);
                     formData.append('nombre',usuario);
@@ -389,12 +362,9 @@
                     formData.append('apmaterno',apmaterno);
                     formData.append('privilegios',privilegios);
                     formData.append('password',password);
-<<<<<<< HEAD
-=======
                     formData.append('id_areas',id_areas);
                     formData.append('id_status',id_status);
                     formData.append('fecha_modificacion',fecha_modificacion);
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
                     senddata(formData);
                 });
 
@@ -531,15 +501,11 @@
                                     <th>Apellido Paterno</th>
                                     <th>Apellido Materno</th>
                                     <th>Privilegios</th>
-<<<<<<< HEAD
-                                    <th>Fecha de alta</th>
-=======
                                     <th>Area</th>
                                     <th>Status</th>
                                     <th>Fecha de alta</th>
 
 
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -554,17 +520,11 @@
                                             <td>'.$row['apmaterno'].'</td>
 
                                             <td>';
-<<<<<<< HEAD
-                                                if($row['id_privilegios']==1){
-=======
                                                 if($row['privilegios']==1){
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
                                                     echo 'Administrador';
-                                                }else if($row['id_privilegios']==2){
+                                                }else if($row['privilegios']==2){
                                                     echo 'Otros';
                                                 }
-<<<<<<< HEAD
-=======
                                                 echo '</td>                                   
 
                                             <td>';
@@ -576,7 +536,6 @@
                                             <td>';
                                                 $status=$consultas->obtener_por_id("status",$row['id_status'],"descripcion");
                                                 echo $status;
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
                                             echo '</td>
                                             <td>'.$row['fecha_alta'].'</td>
                                             <td style="width:50px; min-width:50px; text-align:right;">
@@ -670,8 +629,6 @@
                                             </select>
                                         </div>
                                     </div>
-<<<<<<< HEAD
-=======
                                     <div class="control-group gutters">
                                         <label for="id_areas" class="all-40">Area</label>
                                         <div class="all-60">
@@ -699,7 +656,6 @@
                                             </select>
                                         </div>
                                     </div>
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
 
                                 </form>
                             </div>
@@ -758,8 +714,6 @@
                                             </select>
                                         </div>
                                     </div>
-<<<<<<< HEAD
-=======
                                     <div class="control-group gutters">
                                         <label for="id_areasm" class="all-40">Area</label>
                                         <div class="all-60">
@@ -787,7 +741,6 @@
                                             </select>
                                         </div>
                                     </div>
->>>>>>> d9b5664cb1b148d4e6328fa9107c34cc1e122427
 
                                     <input type="hidden" id="idm" name="idm" value=""/>
                                 </form>
